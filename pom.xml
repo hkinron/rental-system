@@ -8,8 +8,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>spring-boot-vuejs</name>
-	<description>Demo project for Spring Boot</description>
+	<name>rental-system</name>
+	<description>Rental system for Hkinron project</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -27,8 +27,8 @@
     </properties>
 	
 	<modules>
-        <module>rentalsystem-frontend</module>
-        <module>rentalsystem-backend</module>
+        <module>frontend</module>
+        <module>backend</module>
     </modules>
 
 	<build>
