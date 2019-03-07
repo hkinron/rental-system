@@ -4,6 +4,7 @@ import Hello from '@/components/Hello'
 import User from '@/components/User'
 import Bootstrap from '@/components/Bootstrap'
 import Service from '@/components/Service'
+import Room from "@/components/Room";
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/user',
       name: 'User',
       component: User
+    },
+    {
+      path: '/room',
+      name: 'Room',
+      component: Room
     }
   ]
 })
