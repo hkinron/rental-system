@@ -1,15 +1,19 @@
 package com.hkinron.rentalsystem.backend.rentalsystembackend.controller;
 
+import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Record;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Room;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.User;
+import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.RecordRepository;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.RoomRepository;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.UserRepository;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.YearMonth;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,11 +26,15 @@ public class BackendController {
 
     public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
 
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private RecordRepository recordRepository;
 
     @RequestMapping(path = "/hello")
     @ResponseBody
@@ -100,7 +108,7 @@ public class BackendController {
     @GetMapping(path="/room/{id}")
     @ResponseBody
     public Room getRoomById(@PathVariable("id") long id) {
-        LOG.info("Reading user with id " + id + " from database.");
+        LOG.info("Reading record with id " + id + " from database.");
         return roomRepository.findById(id).get();
     }
 
@@ -114,6 +122,44 @@ public class BackendController {
             }
         );
         return rooms;
+    }
+
+    @RequestMapping(path = "/record", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public long addNewRecord(@RequestParam YearMonth yearMonth, @RequestParam int water, @RequestParam int electric, @RequestParam Long roomId){
+        List<Record> records = recordRepository.findByYearMonth(yearMonth);
+        Record record = null;
+        if( records.size()!= 0){
+            //TODO
+        }else {
+            record = new Record(yearMonth, water, electric);
+        }
+
+        recordRepository.save(record);
+
+        LOG.info("Record " + record.toString() + " successfully saved into DB");
+
+        return record.getId();
+    }
+
+    @GetMapping(path="/record/{id}")
+    @ResponseBody
+    public Record getRecordById(@PathVariable("id") long id) {
+        LOG.info("Reading record with id " + id + " from database.");
+        return recordRepository.findById(id).get();
+    }
+
+    @GetMapping(path="/records")
+    @ResponseBody
+    public List<Record> getAllRecords() {
+        LOG.info("Reading all records from database.");
+        List<Record> records = new LinkedList<>();
+        recordRepository.findAll().forEach(item -> {
+            records.add(item);
+            }
+        );
+        return records;
     }
 
 }

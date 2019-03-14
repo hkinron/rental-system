@@ -3,11 +3,24 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/room">Room</router-link> |
-      <router-link to="/user">User</router-link>
+      <router-link to="/user">User</router-link> |
+      <router-link to="/record">Record</router-link>
     </div>
-    <router-view/>
+    <router-view :hellomsg="msg" :rooms="rooms" @rooms="rooms = $event"></router-view>
   </div>
 </template>
+
+<script>
+  export default {
+    name: 'app',
+    data () {
+      return {
+        msg: 'Welcome to your Vue.js powered Spring Boot App',
+        rooms: []
+      }
+    }
+  }
+</script>
 
 <style>
 #app {

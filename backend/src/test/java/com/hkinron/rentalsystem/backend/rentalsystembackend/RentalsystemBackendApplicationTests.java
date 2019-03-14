@@ -11,6 +11,7 @@ public class RentalsystemBackendApplicationTests {
 
 	@Test
 	public void contextLoads() {
+
 	}
 
 }

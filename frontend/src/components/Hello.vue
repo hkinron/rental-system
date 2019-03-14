@@ -8,10 +8,6 @@
     </ul>
     <h3>This site contains more stuff :)</h3>
     <ul>
-      <li>HowTo call REST-Services:</li>
-      <li><router-link :to="{ name: 'Service' }" exact target="_blank">/callservice</router-link></li>
-      <li>HowTo to play around with Bootstrap UI components:</li>
-      <li><router-link :to="{ name: 'Bootstrap' }" exact target="_blank">/bootstrap</router-link></li>
       <li>HowTo to interact with user backend:</li>
       <li><router-link :to="{ name: 'User' }" exact target="_blank">/user</router-link></li>
       <li>HowTo to interact with room backend:</li>
