@@ -11,13 +11,13 @@
         <b-form-input type="text" v-model="user.phone" placeholder="phone"/>
       </b-col>
       <b-col>
-        <b-form-select v-model="user.roomId">
+        <b-form-select v-model="user.room">
           <!-- This slot appears above the options from 'options' prop -->
           <template slot="first">
             <option :value="null" disabled>-- Please select an option --</option>
           </template>
-           These options will appear after the ones from 'options' prop
-          <option v-for="room in rooms" :value="room.id"
+          These options will appear after the ones from 'options' prop
+          <option v-for="room in this.rooms" :value="room"
                   :key="room.id">
             {{ room.name }}
           </option>
@@ -27,16 +27,13 @@
         <b-button variant="success" @click="createUser()">Create User</b-button>
       </b-col>
     </b-form-row>
-
     <b-form-row>
-      <b-col>
-        <b-button variant="success" @click="retrieveAllUsers()">Retrieve all user data from database</b-button>
-      </b-col>
+      <span v-for="item in response">id：{{ item }}</span>
     </b-form-row>
-
     <b-form-row>
       <b-table hover :items="users"/>
     </b-form-row>
+
   </b-container>
 
 </template>
@@ -44,13 +41,13 @@
 <script>
   // import axios from 'axios'
   import {AXIOS} from './http-common'
-  import Room from "@/components/Room";
+  import {mapState} from 'vuex'
 
   export default {
     name: 'user',
-    props: {
-      rooms: Array
-    },
+    // props: {
+    //   rooms: Array
+    // },
     data() {
       return {
         response: [],
@@ -59,40 +56,32 @@
           name: '',
           phone: '',
           roomId: ''
-        },
-        users: [],
+        }
       }
     },
     methods: {
       // Fetches posts when the component is created.
       createUser() {
-        var params = new URLSearchParams()
-        params.append('name', this.user.name)
-        params.append('phone', this.user.phone)
-        params.append('roomId', this.user.roomId)
-
-        AXIOS.post(`/user`, params)
+        AXIOS.post(`/user`, this.user)
           .then(response => {
             // JSON responses are automatically parsed.
-            this.response = response.data
+            this.response.push(response.data)
             this.user.id = response.data
-            console.log(response.data)
-          })
-          .catch(e => {
-            this.errors.push(e)
-          })
-      },
-      retrieveAllUsers() {
-        AXIOS.get(`/users`)
-          .then(response => {
-            // JSON responses are automatically parsed.
-            this.users = response.data
+            this.$store.dispatch('getUsers')
             console.log(response.data)
           })
           .catch(e => {
             this.errors.push(e)
           })
       }
+    },
+    computed: mapState({
+      // 箭头函数可使代码更简练
+      rooms: state => state.rooms,   // es6写法，function (state) { return state.count }
+      users: state => state.users
+    }),
+    mounted: function(){
+      this.$store.dispatch('getUsers')
     }
   }
 
@@ -100,21 +89,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  h1, h2 {
-    font-weight: normal;
-  }
 
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
+div {
+  padding: 10px 10px 0px 10px;
+}
 
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-
-  a {
-    color: #42b983;
-  }
 </style>

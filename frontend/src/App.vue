@@ -6,7 +6,7 @@
       <router-link to="/user">User</router-link> |
       <router-link to="/record">Record</router-link>
     </div>
-    <router-view :hellomsg="msg" :rooms="rooms" @rooms="rooms = $event"></router-view>
+    <router-view :hellomsg="msg"></router-view>
   </div>
 </template>
 
@@ -15,8 +15,7 @@
     name: 'app',
     data () {
       return {
-        msg: 'Welcome to your Vue.js powered Spring Boot App',
-        rooms: []
+        msg: 'Welcome to your Vue.js powered Spring Boot App'
       }
     }
   }
@@ -42,4 +41,6 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+
 </style>

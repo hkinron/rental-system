@@ -17,7 +17,7 @@ public class Room {
     @Column(unique = true)
     @NotEmpty
     private String name;
-    private int price;
+    private String price;
 
     /**
      * Typically, we think of many-to-many relationships when we consider a join table, but, using a join table, in this case, can help us to eliminate these null values:
@@ -32,7 +32,7 @@ public class Room {
 
     protected Room() {}
 
-    public Room(String name, int price){
+    public Room(String name, String price){
         this.name = name;
         this.price = price;
     }
@@ -60,11 +60,11 @@ public class Room {
         this.name = name;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

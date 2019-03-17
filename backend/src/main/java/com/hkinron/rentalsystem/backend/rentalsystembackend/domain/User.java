@@ -1,11 +1,9 @@
 package com.hkinron.rentalsystem.backend.rentalsystembackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user")
@@ -27,9 +25,10 @@ public class User {
 
     protected User() {}
 
-    public User (String name, String phone){
+    public User (String name, String phone, Room room){
         this.name = name;
         this.phone = phone;
+        this.room = room;
     }
 
     @Override

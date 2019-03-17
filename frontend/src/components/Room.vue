@@ -1,29 +1,33 @@
 <template>
-  <div class="room">
-    <h1>Create Room</h1>
+  <b-container class="room">
+    <b-form-row>
+      <b-col><h1>Create Room</h1></b-col>
+    </b-form-row>
+    <b-form-row>
+      <b-col>
+        <b-form-input type="text" v-model="room.name" placeholder="name"></b-form-input>
+      </b-col>
+      <b-col>
+        <b-form-input type="text" v-model="room.price" placeholder="price"></b-form-input>
+      </b-col>
+      <b-col>
+        <b-button variant="success" @click="createRoom()">Create Room</b-button>
+      </b-col>
+    </b-form-row>
+    <b-form-row>
+      <span v-for="item in response">id：{{ item }}</span>
+    </b-form-row>
+    <b-form-row>
+      <b-table hover :items="rooms" :fields="fields"/>
+    </b-form-row>
 
-    <input type="text" v-model="room.name" placeholder="name">
-    <input type="text" v-model="room.price" placeholder="price">
-
-    <button @click="createRoom()">Create Room</button>
-
-    <button @click="retrieveAllRooms()">Retrieve room data from database</button>
-
-    <ul id="rooms">
-      <li
-        v-for="room in rooms"
-        :key="room.id"
-      >
-        {{ room.id }} + {{ room.name }} + {{ room.price }}
-      </li>
-    </ul>
-
-  </div>
+  </b-container>
 </template>
 
 <script>
   // import axios from 'axios'
   import {AXIOS} from './http-common'
+  import {mapState} from 'vuex'
 
   export default {
     name: 'room',
@@ -34,36 +38,36 @@
         errors: [],
         room: {
           name: '',
-          price: '',
-          id: 0
+          price: ''
         },
-        rooms: []
+        fields: {
+          id: {
+            sortable: true
+          },
+          name: {
+            sortable: true
+          },
+          price: {
+            sortable: true
+          },
+          user: {
+            key: 'user.name',
+            label: 'Username',
+            sortable: true
+          }
+
+        }
+
       }
     },
     methods: {
       // Fetches posts when the component is created.
       createRoom() {
-        var params = new URLSearchParams()
-        params.append('name', this.room.name)
-        params.append('price', this.room.price)
-
-        AXIOS.post(`/room`, params)
+        AXIOS.post(`/room`, this.room)
           .then(response => {
             // JSON responses are automatically parsed.
-            this.response = response.data
-            this.room.id = response.data
-            console.log(response.data)
-          })
-          .catch(e => {
-            this.errors.push(e)
-          })
-      },
-      retrieveAllRooms() {
-        AXIOS.get(`/rooms`)
-          .then(response => {
-            // JSON responses are automatically parsed.
-            this.rooms = response.data
-            this.$emit('rooms', this.rooms)
+            this.response.push(response.data)
+            this.$store.dispatch('getRooms')
             console.log(response.data)
           })
           .catch(e => {
@@ -71,8 +75,12 @@
           })
       }
     },
-    beforeMount() {
-      this.retrieveAllRooms()
+    computed: mapState({
+      // 箭头函数可使代码更简练
+      rooms: state => state.rooms,   // es6写法，function (state) { return state.count }
+    }),
+    beforeMount: function () {
+      this.$store.dispatch('getRooms')
     }
   }
 
@@ -80,4 +88,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  div {
+    padding: 10px 10px 0px 10px;
+  }
+
 </style>

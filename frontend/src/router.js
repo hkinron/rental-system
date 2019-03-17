@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from './components/Hello'
 import User from './components/User'
-import Room from "./components/Room"
-import Record from "./components/Record"
+import Room from './components/Room'
+import Record from './components/Record'
 
 Vue.use(Router)
 

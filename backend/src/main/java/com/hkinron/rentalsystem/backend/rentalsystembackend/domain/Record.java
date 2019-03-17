@@ -1,5 +1,8 @@
 package com.hkinron.rentalsystem.backend.rentalsystembackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.YearMonth;
 
@@ -15,6 +18,7 @@ public class Record {
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
+    @JsonFormat(pattern="yyyyMM")
     private YearMonth yearMonth;
     private int water;
     private int electric;

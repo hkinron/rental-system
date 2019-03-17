@@ -6,16 +6,16 @@ import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.User;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.RecordRepository;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.RoomRepository;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.UserRepository;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.YearMonth;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -46,40 +46,33 @@ public class BackendController {
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public long addNewUser(@RequestParam String name, @RequestParam String phone, @RequestParam String roomId){
-
-        User user = new User(name, phone);
-        Room room = null;
-        if( roomId != null && roomId != ""){
-            LOG.info("roomId: " + roomId);
-            room = roomRepository.findById(Long.valueOf(roomId)).get();
-            LOG.info(room.toString());
-            room.setUser(user);
-            user.setRoom(room);
-        }
+    public long addNewUser(@RequestBody User user) {
+        Room room = user.getRoom();
         userRepository.save(user);
-        if(room != null){
+        if (room != null) {
+            room.setUser(user);
+            LOG.info(room.toString());
             roomRepository.save(room);
         }
         LOG.info(user.toString() + " successfully saved into DB");
         return user.getId();
     }
 
-    @GetMapping(path="/user/{id}")
+    @GetMapping(path = "/user/{id}")
     @ResponseBody
     public User getUserById(@PathVariable("id") long id) {
         LOG.info("Reading user with id " + id + " from database.");
         return userRepository.findById(id).get();
     }
 
-    @GetMapping(path="/users")
+    @GetMapping(path = "/users")
     @ResponseBody
     public List<User> getAllUsers() {
         LOG.info("Reading all users from database.");
         List<User> users = new LinkedList<>();
         userRepository.findAll().forEach(item -> {
-            users.add(item);
-        }
+                    users.add(item);
+                }
         );
         return users;
     }
@@ -88,14 +81,10 @@ public class BackendController {
     @RequestMapping(path = "/room", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public long addNewRoom(@RequestParam String name, @RequestParam int price){
-        List<Room> rooms = roomRepository.findByName(String.valueOf(name));
-        Room room = null;
-        if( rooms.size()!= 0){
-            room = rooms.get(0);
-            room.setPrice(price);
-        }else {
-            room = new Room(name, price);
+    public long addNewRoom(@RequestBody Room room) {
+        List<Room> rooms = roomRepository.findByName(String.valueOf(room.getName()));
+        if (rooms.size() != 0) {
+            room.setId(rooms.get(0).getId());
         }
 
         roomRepository.save(room);
@@ -105,21 +94,21 @@ public class BackendController {
         return room.getId();
     }
 
-    @GetMapping(path="/room/{id}")
+    @GetMapping(path = "/room/{id}")
     @ResponseBody
     public Room getRoomById(@PathVariable("id") long id) {
         LOG.info("Reading record with id " + id + " from database.");
         return roomRepository.findById(id).get();
     }
 
-    @GetMapping(path="/rooms")
+    @GetMapping(path = "/rooms")
     @ResponseBody
     public List<Room> getAllRooms() {
         LOG.info("Reading all rooms from database.");
         List<Room> rooms = new LinkedList<>();
         roomRepository.findAll().forEach(item -> {
                     rooms.add(item);
-            }
+                }
         );
         return rooms;
     }
@@ -127,37 +116,32 @@ public class BackendController {
     @RequestMapping(path = "/record", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public long addNewRecord(@RequestParam YearMonth yearMonth, @RequestParam int water, @RequestParam int electric, @RequestParam Long roomId){
-        List<Record> records = recordRepository.findByYearMonth(yearMonth);
-        Record record = null;
-        if( records.size()!= 0){
-            //TODO
-        }else {
-            record = new Record(yearMonth, water, electric);
+    public Map<Long, String> addNewRecord(@RequestBody List<Record> records ) {
+        Map<Long, String> idsmap = new HashMap<>();
+        if (records.size() != 0) {
+            recordRepository.saveAll(records).forEach(item -> {
+                idsmap.put(item.getId(), item.getRoom().getName());
+            });
         }
 
-        recordRepository.save(record);
-
-        LOG.info("Record " + record.toString() + " successfully saved into DB");
-
-        return record.getId();
+        return idsmap;
     }
 
-    @GetMapping(path="/record/{id}")
+    @GetMapping(path = "/record/{id}")
     @ResponseBody
     public Record getRecordById(@PathVariable("id") long id) {
         LOG.info("Reading record with id " + id + " from database.");
         return recordRepository.findById(id).get();
     }
 
-    @GetMapping(path="/records")
+    @GetMapping(path = "/records")
     @ResponseBody
     public List<Record> getAllRecords() {
         LOG.info("Reading all records from database.");
         List<Record> records = new LinkedList<>();
         recordRepository.findAll().forEach(item -> {
-            records.add(item);
-            }
+                    records.add(item);
+                }
         );
         return records;
     }
