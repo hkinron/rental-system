@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface RoomRepository extends CrudRepository <Room, Long> {
     List<Room> findByName(@Param("name") String name);
-    List<Room> findByPrice(@Param("price") String price);
+    List<Room> findByPrice(@Param("price") int price);
 }

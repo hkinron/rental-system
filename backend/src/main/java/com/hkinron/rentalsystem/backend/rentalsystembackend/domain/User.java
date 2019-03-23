@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-@Table(name = "user")
+@Table(name = "tenant")
 public class User {
 
     //Primary key

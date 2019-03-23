@@ -69,7 +69,7 @@
       },
       updateRecordsDate() {
         for (let i = 0; i < this.records.length; i++) {
-          this.records[i].yearMonth = this.recordDate.split('-')[0]+this.recordDate.split('-')[1]
+          this.records[i].yearMonth = this.recordDate.split('-')[0]+ '-' +this.recordDate.split('-')[1]
         }
       }
     },

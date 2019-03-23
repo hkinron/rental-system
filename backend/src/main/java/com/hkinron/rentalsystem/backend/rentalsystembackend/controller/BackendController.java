@@ -1,5 +1,8 @@
 package com.hkinron.rentalsystem.backend.rentalsystembackend.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hkinron.rentalsystem.backend.rentalsystembackend.Util.Calculator;
+import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Bill;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Record;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Room;
 import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.User;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -144,6 +148,29 @@ public class BackendController {
                 }
         );
         return records;
+    }
+
+    @GetMapping(path = "/bills")
+    @ResponseBody
+    public List<Bill> getRecordsByYearMonth(@RequestParam YearMonth yearMonth) {
+        LOG.info("Reading records with YearMonth " + yearMonth + " from database.");
+        List<Record> nowRecords = recordRepository.findByYearMonth(yearMonth);
+        List<Record> lastRecords = recordRepository.findByYearMonth(yearMonth.minusMonths(1));
+
+        List<Bill> bills = new LinkedList<>();
+
+        for ( Record nowRecord : nowRecords ){
+            Room nowRoom = nowRecord.getRoom();
+            lastRecords.forEach(item -> {
+                if(item.getRoom().equals(nowRoom)){
+                    Bill bill = Calculator.calculate(nowRecord, item);
+                    ((LinkedList<Bill>) bills).push(bill);
+
+                }
+            });
+
+        }
+        return bills;
     }
 
 }

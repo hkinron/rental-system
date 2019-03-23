@@ -17,14 +17,14 @@ public class Room {
     @Column(unique = true)
     @NotEmpty
     private String name;
-    private String price;
+    private int price;
 
     /**
      * Typically, we think of many-to-many relationships when we consider a join table, but, using a join table, in this case, can help us to eliminate these null values:
      * Room is the owner of this relationship as we chose to use the join table annotation on it
      */
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "room_user",
+    @JoinTable(name = "room_tenant",
             joinColumns = { @JoinColumn(name = "room_id", referencedColumnName = "id", unique = true)  },
             inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
     @JsonManagedReference
@@ -32,7 +32,7 @@ public class Room {
 
     protected Room() {}
 
-    public Room(String name, String price){
+    public Room(String name, int price){
         this.name = name;
         this.price = price;
     }
@@ -60,11 +60,11 @@ public class Room {
         this.name = name;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

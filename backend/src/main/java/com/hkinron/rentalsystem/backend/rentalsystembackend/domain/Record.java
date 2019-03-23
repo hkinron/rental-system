@@ -18,7 +18,7 @@ public class Record {
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
-    @JsonFormat(pattern="yyyyMM")
+    @JsonFormat(pattern="yyyy-MM")
     private YearMonth yearMonth;
     private int water;
     private int electric;

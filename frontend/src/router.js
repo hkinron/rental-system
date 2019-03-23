@@ -4,6 +4,7 @@ import Hello from './components/Hello'
 import User from './components/User'
 import Room from './components/Room'
 import Record from './components/Record'
+import Bill from "./components/Bill";
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/record',
       name: 'Record',
       component: Record
+    },
+    {
+      path: '/bill',
+      name: 'Bill',
+      component: Bill
     }
   ]
 })

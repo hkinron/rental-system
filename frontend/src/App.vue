@@ -4,7 +4,8 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/room">Room</router-link> |
       <router-link to="/user">User</router-link> |
-      <router-link to="/record">Record</router-link>
+      <router-link to="/record">Record</router-link> |
+      <router-link to="/bill">Bill</router-link>
     </div>
     <router-view :hellomsg="msg"></router-view>
   </div>
