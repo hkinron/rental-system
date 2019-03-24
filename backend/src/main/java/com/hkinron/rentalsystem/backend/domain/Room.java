@@ -7,12 +7,12 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "room")
-public class Room {
+public class Room implements Comparable<Room> {
     //Primary key
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     @NotEmpty
@@ -44,7 +44,7 @@ public class Room {
                 id, name, price, user == null?null:user.getName());
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -74,5 +74,27 @@ public class Room {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public int compareTo(Room room) {
+        //Compare name
+        if(this.name.compareTo(room.getName()) > 0){
+            return 1;
+        }
+        if(this.name.compareTo(room.getName()) < 0){
+            return -1;
+        }
+
+        //Compare id;
+        if(this.id.compareTo(room.getId()) > 0){
+            return 1;
+        }
+        if(this.id.compareTo(room.getId()) < 0){
+            return -1;
+        }
+
+
+        return 0;
     }
 }

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "tenant")
-public class User {
+public class User implements Comparable<User> {
 
     //Primary key
     @Id
@@ -68,5 +68,30 @@ public class User {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    @Override
+    public int compareTo(User user) {
+
+        //Compare name first
+        if(this.name.compareTo(user.getName()) > 0 ){
+            return 1;
+        }
+
+        if(this.name.compareTo(user.getName()) < 0 ){
+            return -1;
+        }
+
+        //Compare Room
+        if(this.room != null && user.getRoom() != null ){
+            if(this.room.compareTo(user.getRoom()) > 0){
+                return 1;
+            }
+            if(this.room.compareTo(user.getRoom()) < 0){
+                return -1;
+            }
+        }
+
+        return 0;
     }
 }

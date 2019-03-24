@@ -72,6 +72,7 @@ public class BackendController {
                     users.add(item);
                 }
         );
+        Collections.sort(users);
         return users;
     }
 
@@ -110,6 +111,7 @@ public class BackendController {
                     rooms.add(item);
                 }
         );
+        Collections.sort(rooms);
         return rooms;
     }
 
@@ -171,6 +173,8 @@ public class BackendController {
                         records.add(item);
                     }
             );
+
+            Collections.sort(records);
             return records;
         }
 
