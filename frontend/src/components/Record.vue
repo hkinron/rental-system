@@ -18,7 +18,7 @@
       </b-col>
     </b-form-row>
     <b-form-row>
-      <b-col md="auto">
+      <b-col v-show="records.length > 0 " md="auto">
         <b-button variant="success" @click="createRecord()">Create</b-button>
       </b-col>
     </b-form-row>
@@ -40,30 +40,46 @@
         response: [],
         errors: [],
         recordDate: '',
-        records: []
+        records: [],
+        recordsInYearMonth: []
       }
     },
     methods: {
       // Fetches posts when the component is created.
       createRecord() {
 
-        AXIOS.post(`/record`, this.records)
+        AXIOS.post(`/records`, this.records)
           .then(response => {
             // JSON responses are automatically parsed.
-            this.response.push(response.data)
+            this.response.push(response.data);
+            this.initRecords();
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+      },
+      getRecord() {
+        let params = new URLSearchParams();
+        params.append('yearMonth', this.recordDate.split('-')[0] + '-' + this.recordDate.split('-')[1]);
+        AXIOS.get(`/records`, {'params': params})
+          .then(response => {
+            // JSON responses are automatically parsed.
+            this.response.push(response.data);
+            this.recordsInYearMonth = response.data;
           })
           .catch(e => {
             this.errors.push(e)
           })
       },
       initRecords() {
+        this.records = [];
         for (let i = 0; i < this.rooms.length; i++) {
           let record = {
             room: this.rooms[i],
             water: '',
             electric: '',
             yearMonth: '',
-          }
+          };
           this.records.push(record)
         }
       },

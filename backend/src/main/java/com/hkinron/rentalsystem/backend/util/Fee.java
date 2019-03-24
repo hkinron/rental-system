@@ -1,4 +1,4 @@
-package com.hkinron.rentalsystem.backend.rentalsystembackend.Util;
+package com.hkinron.rentalsystem.backend.util;
 
 public enum Fee {
 

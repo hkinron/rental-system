@@ -1,4 +1,4 @@
-package com.hkinron.rentalsystem.backend.rentalsystembackend;
+package com.hkinron.rentalsystem.backend;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

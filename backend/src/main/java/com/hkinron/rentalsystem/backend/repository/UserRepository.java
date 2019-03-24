@@ -1,6 +1,6 @@
-package com.hkinron.rentalsystem.backend.rentalsystembackend.repository;
+package com.hkinron.rentalsystem.backend.repository;
 
-import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.User;
+import com.hkinron.rentalsystem.backend.domain.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 

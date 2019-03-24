@@ -13,22 +13,36 @@
 
 
     <b-form-row v-show="bills.length > 0">
-      <table class="table table-striped table-hover">
+      <table class="table table-hover">
         <thead>
           <tr>
-            <th>Room</th><th>User</th><th>Description</th>
+            <th>Room</th><th>Description</th><th>Pay</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="bill in bills" :key="bill.nowRecord.id" >
-            <td>{{ bill.nowRecord.room.name }}</td>
-            <td>{{ bill.nowRecord.room.user.name }}</td>
-            <td>电上月示数：{{bill.lastRecord.electric}},本月：{{bill.nowRecord.electric}}<br>
-                水上月示数：{{bill.lastRecord.water}},本月：{{bill.nowRecord.water}}<br>
-                房租：{{bill.nowRecord.room.price}}元<br>
-                总费用：{{ bill.sum }}元</td>
-          </tr>
-
+          <!--<div v-for="bill in bills" :key="bill.nowRecord.id" >-->
+            <tr v-for="bill in bills" :key="bill.nowRecord.id" >
+              <td class="cell">{{ bill.nowRecord.room.name }}<br>
+                  -----------------<br>
+                  {{ bill.nowRecord.room.user == null ? null : bill.nowRecord.room.user.name }}<br>
+                  -----------------<br>
+                  {{ bill.nowRecord.room.user == null ? null : bill.nowRecord.room.user.phone }}
+              </td>
+              <td id="description" class="cell">
+                  本次收取{{ billDate.split('-')[1] }}月份租金及上月份水电<br>
+                  电：上月示数{{bill.lastRecord.electric}}度，本月{{bill.nowRecord.electric}}度，电费：{{( bill.nowRecord.electric - bill.lastRecord.electric) * electricFee}}元<br>
+                  水：上月示数{{bill.lastRecord.water}}吨，本月{{bill.nowRecord.water}}吨，水费：{{( bill.nowRecord.water - bill.lastRecord.water) * waterFee}}元<br>
+                  房租：{{bill.nowRecord.room.price}}元<br>
+                  总费用：{{ bill.sum }}元
+              </td>
+              <td class="cell">
+                <img class="alipay" src="../assets/alipay.jpg">
+              </td>
+            </tr>
+            <!--<tr>-->
+              <!--<td>{{ bill.nowRecord.room.user.name }}</td>-->
+            <!--</tr>-->
+          <!--</div>-->
         </tbody>
       </table>
     </b-form-row>
@@ -42,8 +56,6 @@
   import {AXIOS} from './http-common'
   import {mapState} from 'vuex'
 
-  const waterfee = 4;
-  const electicfee = 1.3
 
   export default {
     data() {
@@ -52,6 +64,8 @@
         errors: [],
         billDate: '',
         bills: [],
+        waterFee : 4,
+        electricFee : 1.3,
         fields: {
           nowRecord: {
             key: 'nowRecord.room.name',
@@ -96,5 +110,25 @@
 <style scoped>
   div {
     padding: 10px 10px 0px 10px;
+  }
+
+  td {
+    text-align: center;
+  }
+
+  #description {
+    text-align: left;
+  }
+
+  .alipay {
+    width: 55%;
+  }
+
+  .cell {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    border:1px solid ;
+    font-size: x-large;
   }
 </style>

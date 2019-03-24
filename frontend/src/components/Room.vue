@@ -17,7 +17,7 @@
     <b-form-row>
       <span v-for="item in response">id：{{ item }}</span>
     </b-form-row>
-    <b-form-row>
+    <b-form-row v-show="rooms.length > 0 ">
       <b-table hover :items="rooms" :fields="fields"/>
     </b-form-row>
 
@@ -66,9 +66,10 @@
         AXIOS.post(`/room`, this.room)
           .then(response => {
             // JSON responses are automatically parsed.
-            this.response.push(response.data)
-            this.$store.dispatch('getRooms')
-            console.log(response.data)
+            this.response.push(response.data);
+            this.$store.dispatch('getRooms');
+            this.room.name = '';
+            this.room.price = ''
           })
           .catch(e => {
             this.errors.push(e)

@@ -54,8 +54,7 @@
         errors: [],
         user: {
           name: '',
-          phone: '',
-          roomId: ''
+          phone: ''
         }
       }
     },
@@ -65,9 +64,11 @@
         AXIOS.post(`/user`, this.user)
           .then(response => {
             // JSON responses are automatically parsed.
-            this.response.push(response.data)
-            this.user.id = response.data
-            this.$store.dispatch('getUsers')
+            this.response.push(response.data);
+            this.$store.dispatch('getUsers');
+            this.user.name = '';
+            this.user.phone = '';
+            this.user.room = '';
             console.log(response.data)
           })
           .catch(e => {

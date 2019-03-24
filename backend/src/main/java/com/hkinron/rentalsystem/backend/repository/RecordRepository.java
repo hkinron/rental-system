@@ -1,6 +1,6 @@
-package com.hkinron.rentalsystem.backend.rentalsystembackend.repository;
+package com.hkinron.rentalsystem.backend.repository;
 
-import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Record;
+import com.hkinron.rentalsystem.backend.domain.Record;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.YearMonth;

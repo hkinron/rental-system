@@ -1,7 +1,7 @@
-package com.hkinron.rentalsystem.backend.rentalsystembackend.Util;
+package com.hkinron.rentalsystem.backend.util;
 
-import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Bill;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Record;
+import com.hkinron.rentalsystem.backend.domain.Record;
+import com.hkinron.rentalsystem.backend.domain.Bill;
 
 public class Calculator {
 

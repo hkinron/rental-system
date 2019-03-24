@@ -7,13 +7,11 @@ import Record from './components/Record'
 import Bill from "./components/Bill";
 
 Vue.use(Router)
-
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      redirect: 'room'
     },
     {
       path: '/user',

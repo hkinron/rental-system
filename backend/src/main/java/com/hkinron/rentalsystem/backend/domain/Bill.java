@@ -1,4 +1,4 @@
-package com.hkinron.rentalsystem.backend.rentalsystembackend.domain;
+package com.hkinron.rentalsystem.backend.domain;
 
 public class Bill {
 

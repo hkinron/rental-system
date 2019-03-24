@@ -1,14 +1,13 @@
-package com.hkinron.rentalsystem.backend.rentalsystembackend.controller;
+package com.hkinron.rentalsystem.backend.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.Util.Calculator;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Bill;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Record;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.Room;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.domain.User;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.RecordRepository;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.RoomRepository;
-import com.hkinron.rentalsystem.backend.rentalsystembackend.repository.UserRepository;
+import com.hkinron.rentalsystem.backend.domain.Record;
+import com.hkinron.rentalsystem.backend.util.Calculator;
+import com.hkinron.rentalsystem.backend.domain.Bill;
+import com.hkinron.rentalsystem.backend.domain.Room;
+import com.hkinron.rentalsystem.backend.domain.User;
+import com.hkinron.rentalsystem.backend.repository.RecordRepository;
+import com.hkinron.rentalsystem.backend.repository.RoomRepository;
+import com.hkinron.rentalsystem.backend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.YearMonth;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -27,9 +23,6 @@ import java.util.Map;
 public class BackendController {
 
     private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
-
-    public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
-
 
     @Autowired
     private UserRepository userRepository;
@@ -40,20 +33,21 @@ public class BackendController {
     @Autowired
     private RecordRepository recordRepository;
 
-    @RequestMapping(path = "/hello")
-    @ResponseBody
-    public String sayHello() {
-        LOG.info("GET called on /hello resource");
-        return HELLO_TEXT;
-    }
-
     @RequestMapping(path = "/user", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public long addNewUser(@RequestBody User user) {
-        Room room = user.getRoom();
+
+        // If the use exist in DB, update the user in DB
+        List<User> userInDB = userRepository.findByName(user.getName());
+        if(userInDB.size() != 0){
+            user.setId(userInDB.get(0).getId());
+        }
         userRepository.save(user);
-        if (room != null) {
+
+        // If the room is not null, update the room in DB
+        Room room = user.getRoom();
+        if (room != null ) {
             room.setUser(user);
             LOG.info(room.toString());
             roomRepository.save(room);
@@ -86,6 +80,8 @@ public class BackendController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public long addNewRoom(@RequestBody Room room) {
+
+        //If the room exist in DB, update it
         List<Room> rooms = roomRepository.findByName(String.valueOf(room.getName()));
         if (rooms.size() != 0) {
             room.setId(rooms.get(0).getId());
@@ -117,13 +113,37 @@ public class BackendController {
         return rooms;
     }
 
-    @RequestMapping(path = "/record", method = RequestMethod.POST)
+    @RequestMapping(path = "/records", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public Map<Long, String> addNewRecord(@RequestBody List<Record> records ) {
+
         Map<Long, String> idsmap = new HashMap<>();
-        if (records.size() != 0) {
-            recordRepository.saveAll(records).forEach(item -> {
+        if (records.size() == 0 ){
+            return idsmap;
+        }
+        List<Record> recordsInDB = recordRepository.findByYearMonth(records.get(0).getYearMonth());
+        List<Record> targetRecords = new LinkedList<>();
+
+        records.forEach(item -> {
+            for (Record recordInDB : recordsInDB) {
+                // if having the same room between records and recordsInDB, update records id
+                if(recordInDB.getRoom().equals(item.getRoom())){
+                    item.setId(recordInDB.getId());
+                }
+            }
+
+            //Filter out useless records
+            if(item.getElectric() == 0 | item.getWater() == 0 ){
+                return;
+            }
+
+            ((LinkedList<Record>) targetRecords).push(item);
+
+        });
+
+        if (targetRecords.size() != 0) {
+            recordRepository.saveAll(targetRecords).forEach(item -> {
                 idsmap.put(item.getId(), item.getRoom().getName());
             });
         }
@@ -140,15 +160,33 @@ public class BackendController {
 
     @GetMapping(path = "/records")
     @ResponseBody
-    public List<Record> getAllRecords() {
-        LOG.info("Reading all records from database.");
-        List<Record> records = new LinkedList<>();
-        recordRepository.findAll().forEach(item -> {
-                    records.add(item);
-                }
-        );
-        return records;
+    public List<Record> getRecordsInYeahMonth(@RequestParam YearMonth yearMonth) {
+        if (yearMonth != null){
+            LOG.info("Reading records in yearMonth " + yearMonth + " from database.");
+            return recordRepository.findByYearMonth(yearMonth);
+        }else{
+            LOG.info("Reading all records from database.");
+            List<Record> records = new LinkedList<>();
+            recordRepository.findAll().forEach(item -> {
+                        records.add(item);
+                    }
+            );
+            return records;
+        }
+
     }
+
+//    @GetMapping(path = "/records")
+//    @ResponseBody
+//    public List<Record> getAllRecords() {
+//        LOG.info("Reading all records from database.");
+//        List<Record> records = new LinkedList<>();
+//        recordRepository.findAll().forEach(item -> {
+//                    records.add(item);
+//                }
+//        );
+//        return records;
+//    }
 
     @GetMapping(path = "/bills")
     @ResponseBody
