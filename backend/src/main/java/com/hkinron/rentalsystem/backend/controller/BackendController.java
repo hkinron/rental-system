@@ -198,7 +198,8 @@ public class BackendController {
         LOG.info("Reading records with YearMonth " + yearMonth + " from database.");
         List<Record> nowRecords = recordRepository.findByYearMonth(yearMonth);
         List<Record> lastRecords = recordRepository.findByYearMonth(yearMonth.minusMonths(1));
-
+        Collections.sort(nowRecords);
+        Collections.sort(lastRecords);
         List<Bill> bills = new LinkedList<>();
 
         for ( Record nowRecord : nowRecords ){
@@ -206,7 +207,7 @@ public class BackendController {
             lastRecords.forEach(item -> {
                 if(item.getRoom().equals(nowRoom)){
                     Bill bill = Calculator.calculate(nowRecord, item);
-                    ((LinkedList<Bill>) bills).push(bill);
+                    ((LinkedList<Bill>) bills).add(bill);
 
                 }
             });
