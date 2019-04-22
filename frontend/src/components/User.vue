@@ -23,7 +23,10 @@
           </option>
         </b-form-select>
       </b-col>
-      <b-col md="auto">
+      <b-col v-if="editUserFlag == true" md="auto">
+        <b-button variant="success" @click="createUser()">Update User</b-button>
+      </b-col>
+      <b-col v-else md="auto">
         <b-button variant="success" @click="createUser()">Create User</b-button>
       </b-col>
     </b-form-row>
@@ -31,7 +34,13 @@
       <span v-for="item in response">id：{{ item }}</span>
     </b-form-row>
     <b-form-row>
-      <b-table hover :items="users"/>
+      <b-table hover :items="users" :fields="fields">
+        <template slot="id" slot-scope="data">
+          <!-- `data.value` is the value after formatted by the Formatter -->
+          <a href="javascript:;" @click="editUser(data.value)"><span class="icon-pencil"></span>编辑</a>
+          <a href="javascript:;" @click="deleteUser(data.value.id)"><span class="icon-cancel-circle"></span>删除</a>
+        </template>
+      </b-table>
     </b-form-row>
 
   </b-container>
@@ -53,15 +62,57 @@
         response: [],
         errors: [],
         user: {
+          id: '',
           name: '',
           phone: ''
-        }
+        },
+        editUserFlag: false,
+        fields: [
+          // {
+          //   key: "id",
+          //   label: 'Id'
+          // },
+          "name",
+          {
+            key: 'phone',
+            label: '电话号码'
+          },
+          {
+            key: 'id',
+            label: '操作',
+            formatter: (value, key, item) => {
+              return item
+            }
+          }
+        ]
       }
     },
     methods: {
       // Fetches posts when the component is created.
       createUser() {
         AXIOS.post(`/user`, this.user)
+          .then(response => {
+            // JSON responses are automatically parsed.
+            this.response.push(response.data);
+            this.$store.dispatch('getUsers');
+            this.user.id = '';
+            this.user.name = '';
+            this.user.phone = '';
+            this.user.room = '';
+            this.editUserFlag = false;
+            console.log(response.data)
+          })
+          .catch(e => {
+            this.errors.push(e)
+          })
+      },
+      editUser (user){
+        this.user = user
+        this.editUserFlag = true
+      },
+      deleteUser (userid){
+
+        AXIOS.delete(`/user`, { params:{'userId': userid}})
           .then(response => {
             // JSON responses are automatically parsed.
             this.response.push(response.data);

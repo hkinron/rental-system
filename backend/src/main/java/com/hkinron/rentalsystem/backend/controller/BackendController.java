@@ -56,6 +56,30 @@ public class BackendController {
         return user.getId();
     }
 
+    @RequestMapping(path = "/user", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public long deleteUser(@RequestParam String userId) {
+
+        // If the use exist in DB, update the user in DB
+        User userInDB = userRepository.findById(Long.parseLong(userId)).get();
+
+        if( userInDB != null) {
+            // If the room is not null, update the room in DB first
+            Room room = userInDB.getRoom();
+            if (room != null) {
+                room.setUser(null);
+                LOG.info(room.toString());
+                roomRepository.save(room);
+            }
+        }
+
+        userRepository.delete(userInDB);
+
+        LOG.info(userInDB.toString() + " successfully deleted from DB");
+        return userInDB.getId();
+    }
+
     @GetMapping(path = "/user/{id}")
     @ResponseBody
     public User getUserById(@PathVariable("id") long id) {

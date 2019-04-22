@@ -30,10 +30,10 @@
               </td>
               <td id="description" class="cell">
                   本次收取{{ billDate.split('-')[1] }}月份租金及上月份水电<br>
-                  电：上月示数{{bill.lastRecord.electric}}度，本月{{bill.nowRecord.electric}}度，电费：{{( bill.nowRecord.electric - bill.lastRecord.electric) * electricFee}}元<br>
+                  电：上月示数{{bill.lastRecord.electric}}度，本月{{bill.nowRecord.electric}}度，电费：{{( (bill.nowRecord.electric - bill.lastRecord.electric) * electricFee).toFixed(2) }}元<br>
                   水：上月示数{{bill.lastRecord.water}}吨，本月{{bill.nowRecord.water}}吨，水费：{{( bill.nowRecord.water - bill.lastRecord.water) * waterFee}}元<br>
-                  房租：{{bill.nowRecord.room.price}}元<br>
-                  总费用：{{ bill.sum }}元
+                  房租：{{ bill.nowRecord.room.price}}元<br>
+                  总费用：{{ (bill.sum).toFixed(2) }}元
               </td>
               <td class="cell">
                 <img class="alipay" src="../assets/alipay.jpg">
@@ -55,7 +55,6 @@
   // import axios from 'axios'
   import {AXIOS} from './http-common'
   import {mapState} from 'vuex'
-
 
   export default {
     data() {
