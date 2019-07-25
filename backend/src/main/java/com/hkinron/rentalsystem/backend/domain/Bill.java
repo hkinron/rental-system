@@ -1,5 +1,8 @@
 package com.hkinron.rentalsystem.backend.domain;
 
+import lombok.Data;
+
+@Data
 public class Bill {
 
     private Record nowRecord;
@@ -15,28 +18,4 @@ public class Bill {
     }
 
     protected Bill(){}
-
-    public Record getNowRecord() {
-        return nowRecord;
-    }
-
-    public void setNowRecord(Record nowRecord) {
-        this.nowRecord = nowRecord;
-    }
-
-    public Record getLastRecord() {
-        return lastRecord;
-    }
-
-    public void setLastRecord(Record lastRecord) {
-        this.lastRecord = lastRecord;
-    }
-
-    public double getSum() {
-        return sum;
-    }
-
-    public void setSum(double sum) {
-        this.sum = sum;
-    }
 }

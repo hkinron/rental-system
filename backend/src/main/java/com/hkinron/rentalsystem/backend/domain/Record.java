@@ -1,12 +1,14 @@
 package com.hkinron.rentalsystem.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.YearMonth;
 
 @Entity
 @Table(name = "record")
+@Data
 public class Record implements Comparable<Record>{
 
     @Id
@@ -30,46 +32,6 @@ public class Record implements Comparable<Record>{
         this.electric = electric;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public YearMonth getYearMonth() {
-        return yearMonth;
-    }
-
-    public void setYearMonth(YearMonth yearMonth) {
-        this.yearMonth = yearMonth;
-    }
-
-    public int getWater() {
-        return water;
-    }
-
-    public void setWater(int water) {
-        this.water = water;
-    }
-
-    public int getElectric() {
-        return electric;
-    }
-
-    public void setElectric(int electric) {
-        this.electric = electric;
-    }
-
     @Override
     public int compareTo(Record record) {
 
@@ -90,9 +52,6 @@ public class Record implements Comparable<Record>{
         if(this.room.compareTo(record.room) < 0){
             return -1;
         }
-
-
-
 
         return 0;
     }

@@ -1,12 +1,14 @@
 package com.hkinron.rentalsystem.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "tenant")
+@Data
 public class User implements Comparable<User> {
 
     //Primary key
@@ -36,38 +38,6 @@ public class User implements Comparable<User> {
         return String.format(
                 "User[id=%d, name='%s', phone='%s', room='%s']",
                 id, name, phone, room==null?null:room.getName());
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
     }
 
     @Override
