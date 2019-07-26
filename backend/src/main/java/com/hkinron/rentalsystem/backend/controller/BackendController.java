@@ -94,25 +94,7 @@ public class BackendController {
         return users;
     }
 
-    @RequestMapping(path = "/room", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public long addNewRoom(@RequestBody Room room) {
-        List<Room> rooms = roomRepository.findByName(String.valueOf(room.getName()));
-        //If the room exist in DB, update it
-        if (rooms.size() != 0) {
-            room.setId(rooms.get(0).getId());
-        }
-        roomRepository.save(room);
-        logger.info("Room " + room + " successfully saved into DB");
-        return room.getId();
-    }
 
-    @GetMapping(path = "/room/{id}")
-    @ResponseBody
-    public Room getRoomById(@PathVariable("id") long id) {
-        logger.info("Reading record with id " + id + " from database.");
-        return roomRepository.findById(id).get();
-    }
 
     @GetMapping(path = "/rooms")
     @ResponseBody

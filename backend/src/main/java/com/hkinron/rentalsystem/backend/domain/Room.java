@@ -37,6 +37,9 @@ public class Room implements Comparable<Room> {
         this.price = price;
     }
 
+    public Room() {
+    }
+
     @Override
     public String toString() {
         return String.format(
