@@ -94,21 +94,6 @@ public class BackendController {
         return users;
     }
 
-
-
-    @GetMapping(path = "/rooms")
-    @ResponseBody
-    public List<Room> getAllRooms() {
-        logger.info("Reading all rooms from database.");
-        List<Room> rooms = new LinkedList<>();
-        roomRepository.findAll().forEach(item -> {
-                    rooms.add(item);
-                }
-        );
-        Collections.sort(rooms);
-        return rooms;
-    }
-
     @RequestMapping(path = "/records", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -173,18 +158,6 @@ public class BackendController {
         }
 
     }
-
-//    @GetMapping(path = "/records")
-//    @ResponseBody
-//    public List<Record> getAllRecords() {
-//        logger.info("Reading all records from database.");
-//        List<Record> records = new LinkedList<>();
-//        recordRepository.findAll().forEach(item -> {
-//                    records.add(item);
-//                }
-//        );
-//        return records;
-//    }
 
     @GetMapping(path = "/bills")
     @ResponseBody
