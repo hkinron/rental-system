@@ -3,10 +3,7 @@ package com.hkinron.rentalsystem.backend.controller;
 import com.hkinron.rentalsystem.backend.domain.Bill;
 import com.hkinron.rentalsystem.backend.domain.Record;
 import com.hkinron.rentalsystem.backend.domain.Room;
-import com.hkinron.rentalsystem.backend.domain.User;
 import com.hkinron.rentalsystem.backend.repository.RecordRepository;
-import com.hkinron.rentalsystem.backend.repository.RoomRepository;
-import com.hkinron.rentalsystem.backend.repository.UserRepository;
 import com.hkinron.rentalsystem.backend.util.Calculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,75 +20,10 @@ public class BackendController {
 
     private static final Logger logger = LoggerFactory.getLogger(BackendController.class);
 
-    private UserRepository userRepository;
-    private RoomRepository roomRepository;
     private RecordRepository recordRepository;
 
-    public BackendController(UserRepository userRepository, RoomRepository roomRepository, RecordRepository recordRepository) {
-        this.userRepository = userRepository;
-        this.roomRepository = roomRepository;
+    public BackendController(RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
-    }
-
-    @RequestMapping(path = "/user", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public long addNewUser(@RequestBody User user) {
-
-        // If the use exist in DB, update the user in DB
-        List<User> userInDB = userRepository.findByName(user.getName());
-        if (userInDB.size() != 0) {
-            user.setId(userInDB.get(0).getId());
-        }
-        userRepository.save(user);
-
-        // If the room is not null, update the room in DB
-        Room room = user.getRoom();
-        if (room != null) {
-            room.setUser(user);
-            logger.info(room.toString());
-            roomRepository.save(room);
-        }
-        logger.info(user.toString() + " successfully saved into DB");
-        return user.getId();
-    }
-
-    @DeleteMapping(path = "/user")
-    public long deleteUser(@RequestParam String userId) {
-
-        User userInDB = userRepository.findById(Long.parseLong(userId)).orElse(null);
-
-        if (userInDB != null) {
-            Room room = userInDB.getRoom();
-            // If the room is not null, update the room in DB first
-            if (room != null) {
-                room.setUser(null);
-                logger.info(room.toString());
-                roomRepository.save(room);
-            }
-            userRepository.delete(userInDB);
-            logger.info(userInDB + " successfully deleted from DB");
-            return userInDB.getId();
-        } else {
-            logger.info("Cannot find user from DB by userId " + userId);
-            return -1L;
-        }
-    }
-
-    @GetMapping(path = "/user/{id}")
-    public User getUserById(@PathVariable("id") long id) {
-        User user = userRepository.findById(id).orElse(null);
-        logger.info("Get user " + user + " from DB by id " + id);
-        return user;
-    }
-
-    @GetMapping(path = "/users")
-    public List<User> getAllUsers() {
-        List<User> users = new LinkedList<>();
-        userRepository.findAll().forEach(users::add
-        );
-        Collections.sort(users);
-        logger.info("Get " + users.size() + " users from DB");
-        return users;
     }
 
     @RequestMapping(path = "/records", method = RequestMethod.POST)

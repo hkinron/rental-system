@@ -25,7 +25,8 @@ public class User implements Comparable<User> {
     @JsonBackReference
     private Room room;
 
-    protected User() {}
+    public User() {
+    }
 
     public User (String name, String phone, Room room){
         this.name = name;
