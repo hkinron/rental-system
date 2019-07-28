@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.YearMonth;
+import java.util.Objects;
 
 @Entity
 @Table(name = "record")
@@ -30,6 +31,22 @@ public class Record implements Comparable<Record>{
         this.yearMonth = yearMonth;
         this.water = water;
         this.electric = electric;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Record record = (Record) o;
+        return water == record.water &&
+                electric == record.electric &&
+                Objects.equals(room, record.room) &&
+                Objects.equals(yearMonth, record.yearMonth);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(room, yearMonth, water, electric);
     }
 
     @Override
