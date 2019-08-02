@@ -1,6 +1,6 @@
 package com.hkinron.rentalsystem.backend.service;
 
-import com.hkinron.rentalsystem.backend.domain.User;
+import com.hkinron.rentalsystem.backend.model.User;
 import com.hkinron.rentalsystem.backend.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

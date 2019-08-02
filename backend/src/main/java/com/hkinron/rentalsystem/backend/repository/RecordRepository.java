@@ -1,6 +1,6 @@
 package com.hkinron.rentalsystem.backend.repository;
 
-import com.hkinron.rentalsystem.backend.domain.Record;
+import com.hkinron.rentalsystem.backend.model.Record;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;

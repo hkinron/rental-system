@@ -1,6 +1,6 @@
 package com.hkinron.rentalsystem.backend.repository;
 
-import com.hkinron.rentalsystem.backend.domain.User;
+import com.hkinron.rentalsystem.backend.model.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 

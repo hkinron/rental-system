@@ -1,4 +1,4 @@
-package com.hkinron.rentalsystem.backend.domain;
+package com.hkinron.rentalsystem.backend.model;
 
 import lombok.Data;
 
