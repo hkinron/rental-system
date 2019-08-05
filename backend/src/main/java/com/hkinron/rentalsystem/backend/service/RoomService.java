@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,9 +35,8 @@ public class RoomService {
         return roomInDb.orElse(new Room());
     }
 
-    public List<Room> getRooms(Pageable pageable) {
-        Page<Room> roomPage = roomRepository.findAll(pageable);
-        return null;
+    public Page<Room> getRooms(Pageable pageable) {
+        return roomRepository.findAll(pageable);
     }
 
     public void deleteRoomById(long id) {

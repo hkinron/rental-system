@@ -50,8 +50,8 @@
           price: {
             sortable: true
           },
-          user: {
-            key: 'user.name',
+          tenant: {
+            key: 'tenant.name',
             label: 'Username',
             sortable: true
           }

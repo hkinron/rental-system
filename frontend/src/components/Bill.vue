@@ -24,9 +24,9 @@
             <tr v-for="bill in bills" :key="bill.nowRecord.id" >
               <td class="cell">{{ bill.nowRecord.room.name }}<br>
                   -----------------<br>
-                  {{ bill.nowRecord.room.user == null ? null : bill.nowRecord.room.user.name }}<br>
+                  {{ bill.nowRecord.room.tenant == null ? null : bill.nowRecord.room.tenant.name }}<br>
                   -----------------<br>
-                  {{ bill.nowRecord.room.user == null ? null : bill.nowRecord.room.user.phone }}
+                  {{ bill.nowRecord.room.tenant == null ? null : bill.nowRecord.room.tenant.phone }}
               </td>
               <td id="description" class="cell">
                   本次收取{{ billDate.split('-')[1] }}月份租金及上月份水电<br>
@@ -40,7 +40,7 @@
               </td>
             </tr>
             <!--<tr>-->
-              <!--<td>{{ bill.nowRecord.room.user.name }}</td>-->
+              <!--<td>{{ bill.nowRecord.room.tenant.name }}</td>-->
             <!--</tr>-->
           <!--</div>-->
         </tbody>
@@ -72,7 +72,7 @@
             sortable: true
           },
           lastRecord: {
-            key: 'lastRecord.room.user.name',
+            key: 'lastRecord.room.tenant.name',
             label: 'User',
             sortable: true
           },

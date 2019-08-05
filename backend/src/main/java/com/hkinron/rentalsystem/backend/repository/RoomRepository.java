@@ -8,5 +8,4 @@ import java.util.Optional;
 
 public interface RoomRepository extends PagingAndSortingRepository<Room, Long> {
     Optional<Room> findByName( String name);
-    Optional<List<Room>> findByPrice( int price);
 }

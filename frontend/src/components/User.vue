@@ -1,17 +1,17 @@
 <template>
-  <b-container class="user">
+  <b-container class="tenant">
     <b-form-row>
       <b-col><h1>Create User</h1></b-col>
     </b-form-row>
     <b-form-row>
       <b-col>
-        <b-form-input type="text" v-model="user.name" placeholder="name"/>
+        <b-form-input type="text" v-model="tenant.name" placeholder="name"/>
       </b-col>
       <b-col>
-        <b-form-input type="text" v-model="user.phone" placeholder="phone"/>
+        <b-form-input type="text" v-model="tenant.phone" placeholder="phone"/>
       </b-col>
       <b-col>
-        <b-form-select v-model="user.room">
+        <b-form-select v-model="tenant.room">
           <!-- This slot appears above the options from 'options' prop -->
           <template slot="first">
             <option :value="null" disabled>-- Please select an option --</option>
@@ -53,7 +53,7 @@
   import {mapState} from 'vuex'
 
   export default {
-    name: 'user',
+    name: 'tenant',
     // props: {
     //   rooms: Array
     // },
@@ -61,7 +61,7 @@
       return {
         response: [],
         errors: [],
-        user: {
+        tenant: {
           id: '',
           name: '',
           phone: ''
@@ -90,15 +90,15 @@
     methods: {
       // Fetches posts when the component is created.
       createUser() {
-        AXIOS.post(`/user`, this.user)
+        AXIOS.post(`/tenant`, this.tenant)
           .then(response => {
             // JSON responses are automatically parsed.
             this.response.push(response.data);
             this.$store.dispatch('getUsers');
-            this.user.id = '';
-            this.user.name = '';
-            this.user.phone = '';
-            this.user.room = '';
+            this.tenant.id = '';
+            this.tenant.name = '';
+            this.tenant.phone = '';
+            this.tenant.room = '';
             this.editUserFlag = false;
             console.log(response.data)
           })
@@ -106,20 +106,20 @@
             this.errors.push(e)
           })
       },
-      editUser (user){
-        this.user = user
+      editUser (tenant){
+        this.tenant = tenant
         this.editUserFlag = true
       },
       deleteUser (userid){
 
-        AXIOS.delete(`/user`, { params:{'userId': userid}})
+        AXIOS.delete(`/tenant`, { params:{'userId': userid}})
           .then(response => {
             // JSON responses are automatically parsed.
             this.response.push(response.data);
             this.$store.dispatch('getUsers');
-            this.user.name = '';
-            this.user.phone = '';
-            this.user.room = '';
+            this.tenant.name = '';
+            this.tenant.phone = '';
+            this.tenant.room = '';
             console.log(response.data)
           })
           .catch(e => {

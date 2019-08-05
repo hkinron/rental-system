@@ -5,6 +5,7 @@ import com.hkinron.rentalsystem.backend.service.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -22,10 +23,9 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-
     @PostMapping(path = "/room")
     public Room addNewRoom(@RequestBody Room room) {
-        Room roomInDb = new Room();
+        Room roomInDb = null;
         try {
             roomInDb = roomService.addNewRoon(room);
         } catch (Exception e) {
@@ -33,7 +33,6 @@ public class RoomController {
         }
         return roomInDb;
     }
-
 
     @GetMapping(path = "/room/{id}")
     @ResponseBody
@@ -45,9 +44,9 @@ public class RoomController {
 
     @GetMapping(path = "/rooms")
     @ResponseBody
-    public List<Room> getAllRooms(@PageableDefault(value = 15, sort = { "id" }, direction = Sort.Direction.DESC)
+    public Page<Room> getAllRooms(@PageableDefault(value = 15, sort = { "id" }, direction = Sort.Direction.DESC)
                                           Pageable pageable) {
-        List<Room> roomsInDb = roomService.getRooms(pageable);
+        Page<Room> roomsInDb = roomService.getRooms(pageable);
         log.info("Reading all rooms from database.");
         return roomsInDb;
     }

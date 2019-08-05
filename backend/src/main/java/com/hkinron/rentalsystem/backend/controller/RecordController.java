@@ -2,9 +2,7 @@ package com.hkinron.rentalsystem.backend.controller;
 
 import com.hkinron.rentalsystem.backend.model.Bill;
 import com.hkinron.rentalsystem.backend.model.Record;
-import com.hkinron.rentalsystem.backend.model.Room;
 import com.hkinron.rentalsystem.backend.service.RecordService;
-import com.hkinron.rentalsystem.backend.util.FeeCalculator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +48,7 @@ public class RecordController {
     @GetMapping(path = "/bills")
     public List<Bill> getRecordsByYearMonth(@RequestParam YearMonth yearMonth, @PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
             Pageable pageable) {
-        return recordService.getBillByYearMonth(yearMonth,pageable);
+        return recordService.getBillByYearMonth(yearMonth, pageable);
     }
 
 }

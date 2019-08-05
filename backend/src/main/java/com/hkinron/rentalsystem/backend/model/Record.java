@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "record")
 @Data
-public class Record implements Comparable<Record>{
+public class Record implements Comparable<Record> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,14 +20,15 @@ public class Record implements Comparable<Record>{
     @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
-    @JsonFormat(pattern="yyyy-MM")
+    @JsonFormat(pattern = "yyyy-MM")
     private YearMonth yearMonth;
     private int water;
     private int electric;
 
-    protected Record(){}
+    protected Record() {
+    }
 
-    public Record (YearMonth yearMonth, int water, int electric){
+    public Record(YearMonth yearMonth, int water, int electric) {
         this.yearMonth = yearMonth;
         this.water = water;
         this.electric = electric;
@@ -35,8 +36,12 @@ public class Record implements Comparable<Record>{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Record record = (Record) o;
         return water == record.water &&
                 electric == record.electric &&
@@ -51,25 +56,11 @@ public class Record implements Comparable<Record>{
 
     @Override
     public int compareTo(Record record) {
-
         //Compare yearMonth first
-        if(this.yearMonth.compareTo(record.yearMonth) > 0 ){
-            return 1;
+        if (this.yearMonth.compareTo(record.yearMonth) != 0) {
+            return this.yearMonth.compareTo(record.yearMonth);
+        } else {
+            return this.room.compareTo(record.room);
         }
-
-        if(this.yearMonth.compareTo(record.yearMonth) < 0){
-            return -1;
-        }
-
-        //Compare room
-        if(this.room.compareTo(record.room) > 0 ){
-            return 1;
-        }
-
-        if(this.room.compareTo(record.room) < 0){
-            return -1;
-        }
-
-        return 0;
     }
 }
