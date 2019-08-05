@@ -15,17 +15,29 @@
       </b-col>
     </b-form-row>
     <b-form-row>
-      <span v-for="item in response">id：{{ item }}</span>
+      <b-alert
+        :show="dismissCountDown"
+        dismissible
+        variant="success"
+        @dismissed="dismissCountDown=0"
+        @dismiss-count-down="countDownChanged"
+      >
+        <p>Successfully add room: {{ this.response.name }}, closing in {{ dismissCountDown }} seconds...</p>
+        <b-progress
+          variant="success"
+          :max="dismissSecs"
+          :value="dismissCountDown"
+          height="4px"
+        ></b-progress>
+      </b-alert>
     </b-form-row>
-    <b-form-row v-show="rooms.length > 0 ">
-      <b-table hover :items="rooms" :fields="fields"/>
+    <b-form-row v-if=" roomPage.content !== undefined && roomPage.content.length > 0 ">
+      <b-table hover :items="roomPage.content" :fields="fields"/>
     </b-form-row>
-
   </b-container>
 </template>
 
 <script>
-  // import axios from 'axios'
   import {AXIOS} from './http-common'
   import {mapState} from 'vuex'
 
@@ -34,16 +46,16 @@
 
     data() {
       return {
-        response: [],
+        response: '',
         errors: [],
+        showDismissibleAlert: false,
+        dismissSecs: 5,
+        dismissCountDown: 0,
         room: {
           name: '',
           price: ''
         },
         fields: {
-          id: {
-            sortable: true
-          },
           name: {
             sortable: true
           },
@@ -61,36 +73,38 @@
       }
     },
     methods: {
-      // Fetches posts when the component is created.
       createRoom() {
         AXIOS.post(`/room`, this.room)
           .then(response => {
-            // JSON responses are automatically parsed.
-            this.response.push(response.data);
-            this.$store.dispatch('getRooms');
+            this.response = response.data;
+            this.showAlert();
+            this.$store.dispatch('getRooms').then(response => {
+              console.log('Successfully get rooms' + response)
+            }).catch(exceptions => {
+              console.log(exceptions)
+            });
             this.room.name = '';
             this.room.price = ''
           })
           .catch(e => {
             this.errors.push(e)
           })
+      },
+      countDownChanged(dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+      },
+      showAlert() {
+        this.dismissCountDown = this.dismissSecs
       }
     },
     computed: mapState({
       // 箭头函数可使代码更简练
-      rooms: state => state.rooms,   // es6写法，function (state) { return state.count }
+      roomPage: state => state.roomPage   // es6写法，function (state) { return state.count }
     }),
     beforeMount: function () {
-      this.$store.dispatch('getRooms')
+      this.$store.dispatch('getRooms').then(response => {
+        console.log('Successfully get rooms' + response)
+      })
     }
   }
-
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  div {
-    padding: 10px 10px 0px 10px;
-  }
-
-</style>

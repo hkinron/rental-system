@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from './components/Hello'
-import User from './components/User'
+import Tenant from './components/Tenant'
 import Room from './components/Room'
 import Record from './components/Record'
-import Bill from "./components/Bill";
+import Bill from './components/Bill'
 
 Vue.use(Router)
 export default new Router({
@@ -14,10 +13,9 @@ export default new Router({
       redirect: 'room'
     },
     {
-      path: '/user',
-      name: 'User',
-      component: User,
-      props: true
+      path: '/tenant',
+      name: 'Tenant',
+      component: Tenant,
     },
     {
       path: '/room',

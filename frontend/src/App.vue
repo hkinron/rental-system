@@ -2,7 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/room">Room</router-link> |
-      <router-link to="/user">User</router-link> |
+      <router-link to="/tenant">Tenant</router-link> |
       <router-link to="/record">Record</router-link> |
       <router-link to="/bill">Bill</router-link>
     </div>
