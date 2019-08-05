@@ -1,12 +1,16 @@
 package com.hkinron.rentalsystem.backend.repository;
 
-import com.hkinron.rentalsystem.backend.domain.Record;
-import org.springframework.data.repository.CrudRepository;
+import com.hkinron.rentalsystem.backend.model.Record;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 
-public interface RecordRepository extends CrudRepository<Record, Long> {
-    List<Record> findByYearMonth(YearMonth yearMonth);
-    List<Record> findByRoomId(Long roomId);
+public interface RecordRepository extends PagingAndSortingRepository<Record, Long> {
+    Page<Record> findByYearMonth(YearMonth yearMonth, Pageable pageable);
+
+    Optional<List<Record>> findByYearMonth(YearMonth yearMonth);
 }

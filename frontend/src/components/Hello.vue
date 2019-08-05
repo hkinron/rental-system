@@ -8,8 +8,8 @@
     </ul>
     <h3>This site contains more stuff :)</h3>
     <ul>
-      <li>HowTo to interact with user backend:</li>
-      <li><router-link :to="{ name: 'User' }" exact target="_blank">/user</router-link></li>
+      <li>HowTo to interact with tenant backend:</li>
+      <li><router-link :to="{ name: 'User' }" exact target="_blank">/tenant</router-link></li>
       <li>HowTo to interact with room backend:</li>
       <li><router-link :to="{ name: 'Room' }" exact target="_blank">/room</router-link></li>
     </ul>
