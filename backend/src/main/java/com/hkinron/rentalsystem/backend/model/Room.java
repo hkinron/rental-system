@@ -1,5 +1,7 @@
 package com.hkinron.rentalsystem.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +21,8 @@ public class Room implements Comparable<Room> {
     private int price;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "room")
-    private List<Tenant> tenant;
+    @JsonIgnoreProperties("room")
+    private List<Tenant> tenants;
 
     public Room(String name, int price) {
         this.name = name;
@@ -27,6 +30,16 @@ public class Room implements Comparable<Room> {
     }
 
     public Room() {
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", tenant=" + tenants +
+                '}';
     }
 
     @Override
