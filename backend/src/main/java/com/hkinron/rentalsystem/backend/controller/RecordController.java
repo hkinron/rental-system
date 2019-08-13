@@ -1,7 +1,7 @@
 package com.hkinron.rentalsystem.backend.controller;
 
 import com.hkinron.rentalsystem.backend.model.Bill;
-import com.hkinron.rentalsystem.backend.model.Record;
+import com.hkinron.rentalsystem.backend.entity.Record;
 import com.hkinron.rentalsystem.backend.service.RecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@RequestMapping("/records")
 public class RecordController {
     private RecordService recordService;
 
@@ -23,32 +24,36 @@ public class RecordController {
         this.recordService = recordService;
     }
 
-    @PostMapping(path = "/records")
-    public List<Long> addNewRecord(@RequestBody List<Record> records) {
-        Iterable<Record> recordsIterator = recordService.addNewRecords(records);
+    @PostMapping(path = "/")
+    public List<Long> createRecords(@RequestBody List<Record> records) {
+        Iterable<Record> recordsIterator = recordService.createRecords(records);
         List<Long> recordIds = new LinkedList<>();
-        recordsIterator.forEach(record -> {
-            recordIds.add(record.getId());
-        });
+        recordsIterator.forEach(record -> recordIds.add(record.getId()));
+        log.info(String.format("Successfully update records: %s", recordIds));
         return recordIds;
     }
 
-    @GetMapping(path = "/records")
-    public Page<Record> getRecordsInYeahMonth(@RequestParam YearMonth yearMonth,
+    @GetMapping(path = "/yearMonth/{yeahMonth}")
+    public Page<Record> getRecordsByYeahMonth(@PathVariable("yeahMonth") YearMonth yearMonth,
                                               @PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
                                                       Pageable pageable) {
-        return recordService.getRecordsInYeahMonth(yearMonth, pageable);
+        Page<Record> recordsInYeahMonth = recordService.getRecordsInYeahMonth(yearMonth, pageable);
+        log.info(String.format("Successfully get records: %s", recordsInYeahMonth));
+        return recordsInYeahMonth;
     }
 
-    @DeleteMapping(path = "/record/{id}")
-    public void deleteRecordsById(@RequestParam long id) {
-        recordService.deleteRecordsById(id);
+    @DeleteMapping(path = "/{id}")
+    public void deleteRecordById(@PathVariable("id") long id) {
+        recordService.deleteRecordById(id);
+        log.info(String.format("Successfully delete record by id: %d", id));
     }
 
     @GetMapping(path = "/bills")
-    public List<Bill> getRecordsByYearMonth(@RequestParam YearMonth yearMonth, @PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
+    public List<Bill> getBillsByYearMonth(@RequestParam YearMonth yearMonth, @PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
             Pageable pageable) {
-        return recordService.getBillByYearMonth(yearMonth, pageable);
+        List<Bill> bills = recordService.getBillByYearMonth(yearMonth, pageable);
+        log.info(String.format("Successfully get  bills: %s", bills));
+        return bills;
     }
 
 }

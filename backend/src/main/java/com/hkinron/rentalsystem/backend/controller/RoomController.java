@@ -1,6 +1,6 @@
 package com.hkinron.rentalsystem.backend.controller;
 
-import com.hkinron.rentalsystem.backend.model.Room;
+import com.hkinron.rentalsystem.backend.entity.Room;
 import com.hkinron.rentalsystem.backend.service.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
+@RequestMapping("room")
 public class RoomController {
 
     private RoomService roomService;
@@ -19,39 +20,39 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @PostMapping(path = "/room")
-    public Room addNewRoom(@RequestBody Room room) {
+    @PostMapping(path = "/")
+    public Room createRoom(@RequestBody Room room) {
         Room roomInDb = null;
         try {
-            roomInDb = roomService.addNewRoon(room);
+            roomInDb = roomService.createRoom(room);
         } catch (Exception e) {
             log.error(String.format("Fail to add new room: %s", room));
         }
         return roomInDb;
     }
 
-    @GetMapping(path = "/room/{id}")
+    @GetMapping(path = "/{id}")
     @ResponseBody
     public Room getRoomById(@PathVariable("id") long id) {
         Room roomInDb = roomService.getRoomById(id);
-        log.info(String.format("Successfully get %s id %d from database.", roomInDb, id));
+        log.info(String.format("Successfully get %s id %d.", roomInDb, id));
         return roomInDb;
     }
 
-    @GetMapping(path = "/rooms")
+    @GetMapping(path = "/")
     @ResponseBody
     public Page<Room> getAllRooms(@PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
                                           Pageable pageable) {
         Page<Room> roomsInDb = roomService.getRooms(pageable);
-        log.info("Reading all rooms from database.");
+        log.info("Reading all rooms.");
         return roomsInDb;
     }
 
-    @DeleteMapping(path = "/room/{id}")
+    @DeleteMapping(path = "/{id}")
     @ResponseBody
     public void deleteRoomById(@PathVariable("id") long id) {
         roomService.deleteRoomById(id);
-        log.info(String.format("Successfully delete room which id is %d from database.", id));
+        log.info(String.format("Successfully delete room which id is %d.", id));
     }
 
 }

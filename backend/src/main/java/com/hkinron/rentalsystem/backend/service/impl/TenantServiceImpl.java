@@ -1,8 +1,8 @@
 package com.hkinron.rentalsystem.backend.service.impl;
 
-import com.hkinron.rentalsystem.backend.model.Tenant;
+import com.hkinron.rentalsystem.backend.entity.Tenant;
 import com.hkinron.rentalsystem.backend.repository.UserRepository;
-import com.hkinron.rentalsystem.backend.service.TanentService;
+import com.hkinron.rentalsystem.backend.service.TenantService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class TanentServiceImpl implements TanentService {
+public class TenantServiceImpl implements TenantService {
 
     private UserRepository userRepository;
 
-    public TanentServiceImpl(UserRepository userRepository) {
+    public TenantServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public Tenant addNewUser(Tenant tenant) {
+    public Tenant createUser(Tenant tenant) {
         //1.Check if user exist in DB
         Optional<Tenant> userOptional = userRepository.findByName(tenant.getName());
         //2. If exist, update user id
@@ -41,7 +41,7 @@ public class TanentServiceImpl implements TanentService {
     }
 
     @Override
-    public void deleteUser(long userId) {
+    public void deleteUserById(long userId) {
         userRepository.deleteById(userId);
     }
 }

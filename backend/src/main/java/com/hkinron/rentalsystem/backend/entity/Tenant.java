@@ -1,8 +1,6 @@
-package com.hkinron.rentalsystem.backend.model;
+package com.hkinron.rentalsystem.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;

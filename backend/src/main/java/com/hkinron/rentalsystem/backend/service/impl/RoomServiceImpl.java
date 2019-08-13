@@ -1,6 +1,6 @@
 package com.hkinron.rentalsystem.backend.service.impl;
 
-import com.hkinron.rentalsystem.backend.model.Room;
+import com.hkinron.rentalsystem.backend.entity.Room;
 import com.hkinron.rentalsystem.backend.repository.RoomRepository;
 import com.hkinron.rentalsystem.backend.service.RoomService;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room addNewRoon(Room room) {
+    public Room createRoom(Room room) {
 
         //1. Check room if exist
         Optional<Room> roomInDb = roomRepository.findByName(room.getName());

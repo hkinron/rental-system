@@ -1,5 +1,6 @@
 package com.hkinron.rentalsystem.backend.model;
 
+import com.hkinron.rentalsystem.backend.entity.Record;
 import lombok.Data;
 
 @Data

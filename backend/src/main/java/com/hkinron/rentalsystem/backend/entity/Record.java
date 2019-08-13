@@ -1,4 +1,4 @@
-package com.hkinron.rentalsystem.backend.model;
+package com.hkinron.rentalsystem.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

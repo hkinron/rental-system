@@ -1,8 +1,8 @@
 package com.hkinron.rentalsystem.backend.service.impl;
 
 import com.hkinron.rentalsystem.backend.model.Bill;
-import com.hkinron.rentalsystem.backend.model.Record;
-import com.hkinron.rentalsystem.backend.model.Room;
+import com.hkinron.rentalsystem.backend.entity.Record;
+import com.hkinron.rentalsystem.backend.entity.Room;
 import com.hkinron.rentalsystem.backend.repository.RecordRepository;
 import com.hkinron.rentalsystem.backend.service.RecordService;
 import com.hkinron.rentalsystem.backend.util.FeeCalculator;
@@ -27,7 +27,7 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public Iterable<Record> addNewRecords(List<Record> records) {
+    public Iterable<Record> createRecords(List<Record> records) {
         Optional<List<Record>> recordListOptional = recordRepository.findByYearMonth(records.get(0).getYearMonth());
         recordListOptional.ifPresent(recordList -> recordList.forEach(recordInDb -> {
             if (records.contains(recordInDb)) {
@@ -44,7 +44,7 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public void deleteRecordsById(long id) {
+    public void deleteRecordById(long id) {
         recordRepository.deleteById(id);
     }
 

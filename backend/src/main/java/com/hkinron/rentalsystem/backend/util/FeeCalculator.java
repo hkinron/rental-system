@@ -1,7 +1,7 @@
 package com.hkinron.rentalsystem.backend.util;
 
 import com.hkinron.rentalsystem.backend.model.Bill;
-import com.hkinron.rentalsystem.backend.model.Record;
+import com.hkinron.rentalsystem.backend.entity.Record;
 
 public class FeeCalculator {
 
