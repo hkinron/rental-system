@@ -15,7 +15,7 @@ export default new Router({
     {
       path: '/tenant',
       name: 'Tenant',
-      component: Tenant,
+      component: Tenant
     },
     {
       path: '/room',

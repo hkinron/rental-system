@@ -11,14 +11,14 @@
 </template>
 
 <script>
-  export default {
-    name: 'app',
-    data () {
-      return {
-        msg: 'Welcome to your Vue.js powered Spring Boot App'
-      }
+export default {
+  name: 'app',
+  data () {
+    return {
+      msg: 'Welcome to your Vue.js powered Spring Boot App'
     }
   }
+}
 </script>
 
 <style>
@@ -42,6 +42,5 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
-
 
 </style>

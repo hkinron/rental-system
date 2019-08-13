@@ -23,85 +23,81 @@
       </b-col>
     </b-form-row>
     <b-form-row>
-        <span v-for="item in response">{{item}} 插入成功</span>
+        <span :key="item" v-for="item in response">{{item}} 插入成功</span>
     </b-form-row>
   </b-container>
 
 </template>
 
 <script>
-  // import axios from 'axios'
-  import {AXIOS} from './http-common'
-  import {mapState} from 'vuex'
+// import axios from 'axios'
+import { AXIOS } from './http-common'
+import { mapState } from 'vuex'
 
-  export default {
-    data() {
-      return {
-        response: [],
-        errors: [],
-        recordDate: '',
-        records: [],
-        recordsInYearMonth: []
+export default {
+  data () {
+    return {
+      response: [],
+      errors: [],
+      recordDate: '',
+      records: [],
+      recordsInYearMonth: []
+    }
+  },
+  methods: {
+    // Fetches posts when the component is created.
+    createRecord () {
+      AXIOS.post(`/records`, this.records)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.response.push(response.data)
+          this.initRecords()
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    getRecord () {
+      let params = new URLSearchParams()
+      params.append('yearMonth', this.recordDate.split('-')[0] + '-' + this.recordDate.split('-')[1])
+      AXIOS.get(`/records`, { 'params': params })
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.response.push(response.data)
+          this.recordsInYearMonth = response.data
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+    initRecords () {
+      this.records = []
+      for (let i = 0; i < this.rooms.length; i++) {
+        let record = {
+          room: this.rooms[i],
+          water: '',
+          electric: '',
+          yearMonth: ''
+        }
+        this.records.push(record)
       }
     },
-    methods: {
-      // Fetches posts when the component is created.
-      createRecord() {
-
-        AXIOS.post(`/records`, this.records)
-          .then(response => {
-            // JSON responses are automatically parsed.
-            this.response.push(response.data);
-            this.initRecords();
-          })
-          .catch(e => {
-            this.errors.push(e)
-          })
-      },
-      getRecord() {
-        let params = new URLSearchParams();
-        params.append('yearMonth', this.recordDate.split('-')[0] + '-' + this.recordDate.split('-')[1]);
-        AXIOS.get(`/records`, {'params': params})
-          .then(response => {
-            // JSON responses are automatically parsed.
-            this.response.push(response.data);
-            this.recordsInYearMonth = response.data;
-          })
-          .catch(e => {
-            this.errors.push(e)
-          })
-      },
-      initRecords() {
-        this.records = [];
-        for (let i = 0; i < this.rooms.length; i++) {
-          let record = {
-            room: this.rooms[i],
-            water: '',
-            electric: '',
-            yearMonth: '',
-          };
-          this.records.push(record)
-        }
-      },
-      updateRecordsDate() {
-        for (let i = 0; i < this.records.length; i++) {
-          this.records[i].yearMonth = this.recordDate.split('-')[0]+ '-' +this.recordDate.split('-')[1]
-        }
+    updateRecordsDate () {
+      for (let i = 0; i < this.records.length; i++) {
+        this.records[i].yearMonth = this.recordDate.split('-')[0] + '-' + this.recordDate.split('-')[1]
       }
-    },
-    mounted: function () {
-      this.initRecords()
-    },
-    computed: mapState({
-      rooms: state => state.rooms,
-    })
-  }
+    }
+  },
+  mounted: function () {
+    this.initRecords()
+  },
+  computed: mapState({
+    rooms: state => state.rooms
+  })
+}
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  div {
-    padding: 10px 10px 0px 10px;
-  }
 </style>
