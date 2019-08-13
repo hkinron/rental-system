@@ -24,7 +24,7 @@ public class RecordController {
         this.recordService = recordService;
     }
 
-    @PostMapping(path = "/")
+    @PostMapping
     public List<Long> createRecords(@RequestBody List<Record> records) {
         Iterable<Record> recordsIterator = recordService.createRecords(records);
         List<Long> recordIds = new LinkedList<>();

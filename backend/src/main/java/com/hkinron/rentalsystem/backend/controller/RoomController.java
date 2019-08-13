@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequestMapping("room")
+@RequestMapping("rooms")
 public class RoomController {
 
     private RoomService roomService;
@@ -20,7 +20,7 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @PostMapping(path = "/")
+    @PostMapping
     public Room createRoom(@RequestBody Room room) {
         Room roomInDb = null;
         try {
@@ -32,15 +32,13 @@ public class RoomController {
     }
 
     @GetMapping(path = "/{id}")
-    @ResponseBody
     public Room getRoomById(@PathVariable("id") long id) {
         Room roomInDb = roomService.getRoomById(id);
         log.info(String.format("Successfully get %s id %d.", roomInDb, id));
         return roomInDb;
     }
 
-    @GetMapping(path = "/")
-    @ResponseBody
+    @GetMapping
     public Page<Room> getAllRooms(@PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
                                           Pageable pageable) {
         Page<Room> roomsInDb = roomService.getRooms(pageable);
@@ -49,7 +47,6 @@ public class RoomController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @ResponseBody
     public void deleteRoomById(@PathVariable("id") long id) {
         roomService.deleteRoomById(id);
         log.info(String.format("Successfully delete room which id is %d.", id));

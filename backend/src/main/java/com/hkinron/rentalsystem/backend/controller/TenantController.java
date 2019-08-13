@@ -20,7 +20,7 @@ public class TenantController {
         this.tenantService = tenantService;
     }
 
-    @PostMapping(path = "/")
+    @PostMapping
     public Tenant createTenant(@RequestBody Tenant tenant) {
         Tenant tenantInDb = tenantService.createUser(tenant);
         log.info(String.format("Successfully create tenant %s.", tenant));
@@ -34,7 +34,7 @@ public class TenantController {
         return tenant;
     }
 
-    @GetMapping(path = "/")
+    @GetMapping
     public Page<Tenant> getAllTenants(@PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
                                           Pageable pageable) {
         Page<Tenant> users = tenantService.getAllUsers(pageable);
