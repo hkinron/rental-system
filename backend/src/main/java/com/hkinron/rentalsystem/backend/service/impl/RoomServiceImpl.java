@@ -20,14 +20,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room createRoom(Room room) {
-
         //1. Check room if exist
         Optional<Room> roomInDb = roomRepository.findByName(room.getName());
         //2. If it exist, update room id
         roomInDb.ifPresent(value -> room.setId(value.getId()));
         //3. Create Or Update room in DB
         return roomRepository.save(room);
-
     }
 
     @Override

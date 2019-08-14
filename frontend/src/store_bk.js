@@ -10,8 +10,7 @@ export default new Vuex.Store({
   state: {
     roomPage: [],
     tenantPage: [],
-    records: [],
-    count: 1
+    records: []
   },
   mutations: {
     getRooms (state, payload) {

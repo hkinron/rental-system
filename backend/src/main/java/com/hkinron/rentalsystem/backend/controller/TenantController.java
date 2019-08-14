@@ -38,14 +38,14 @@ public class TenantController {
     public Page<Tenant> getAllTenants(@PageableDefault(value = 15, sort = {"id"}, direction = Sort.Direction.DESC)
                                           Pageable pageable) {
         Page<Tenant> users = tenantService.getAllUsers(pageable);
-        log.info(String.format("Get %d tenants.", users.getTotalElements()));
+        log.info(String.format("Successfully Get %d tenants.", users.getTotalElements()));
         return users;
     }
 
     @DeleteMapping(path = "/{id}")
     public long deleteTenantById(@PathVariable("id") long id) {
         tenantService.deleteUserById(id);
-        log.info(String.format("successfully deleted tenant by id %d", id));
+        log.info(String.format("Successfully deleted tenant by id %d", id));
         return id;
     }
 
