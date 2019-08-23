@@ -3,15 +3,18 @@ import Mock from 'mockjs'
 const data = Mock.mock({
   'items|15': [{
     id: '@id',
-    name: '@integer(401, 409)',
-    price: '@integer(300, 5000)',
-    tenants: []
+    water: '@integer(100, 1000)',
+    electric: '@integer(300, 5000)',
+    yeahMonth: '@now(yyyy-MM)',
+    room: {
+      name: '@integer(400, 409)'
+    }
   }]
 })
 
 export default [
   {
-    url: '/rooms',
+    url: '/records/yeahMonth',
     type: 'get',
     response: config => {
       const items = data.items

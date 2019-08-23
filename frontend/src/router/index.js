@@ -56,46 +56,75 @@ export const constantRoutes = [
   },
 
   {
-    path: '/example',
+    path: '/room',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: '/room/list',
+    name: 'Room',
+    meta: { title: 'Room', icon: 'example' },
     children: [
       {
-        path: 'room',
-        name: 'Room',
-        component: () => import('@/views/room/index'),
-        meta: { title: 'Room', icon: 'table' }
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/room/list'),
+        meta: { title: 'List', icon: 'table' }
       },
       {
-        path: 'tenant',
-        name: 'Tenant',
-        component: () => import('@/views/tenant/index'),
-        meta: { title: 'Tenant', icon: 'table' }
+        path: 'create',
+        name: 'Create',
+        component: () => import('@/views/room/create'),
+        meta: { title: 'Create', icon: 'form' }
       },
       {
         path: 'tree',
         name: 'Tree',
-        component: () => import('@/views/tree/index'),
+        component: () => import('@/views/room/tree'),
         meta: { title: 'Tree', icon: 'tree' }
       }
     ]
   },
 
   {
-    path: '/form',
+    path: '/tenant',
+    redirect: '/tenant/list',
     component: Layout,
+    name: 'Tenant',
+    meta: { title: 'Tenant', icon: 'example' },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/tenant/list'),
+        meta: { title: 'List', icon: 'table' }
+      },
+      {
+        path: 'create',
+        name: 'Create',
+        component: () => import('@/views/tenant/create'),
+        meta: { title: 'Create', icon: 'form' }
       }
     ]
   },
-
+  {
+    path: '/record',
+    redirect: '/record/list',
+    component: Layout,
+    name: 'Record',
+    meta: { title: 'Record', icon: 'example' },
+    children: [
+      {
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/record/list'),
+        meta: { title: 'List', icon: 'table' }
+      },
+      {
+        path: 'create',
+        name: 'Create',
+        component: () => import('@/views/record/create'),
+        meta: { title: 'Create', icon: 'form' }
+      }
+    ]
+  },
   {
     path: '/nested',
     component: Layout,

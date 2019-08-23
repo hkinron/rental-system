@@ -5,12 +5,14 @@ import user from './user'
 import table from './table'
 import room from './room'
 import tenant from './tenant'
+import record from './record'
 
 const mocks = [
   ...user,
   ...table,
   ...room,
-  ...tenant
+  ...tenant,
+  ...record
 ]
 
 // for front mock
